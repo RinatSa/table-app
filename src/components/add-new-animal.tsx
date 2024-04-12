@@ -1,4 +1,5 @@
 import {useForm} from "react-hook-form";
+import axios from "axios";
 
 type Inputs = {
     name: string
@@ -6,7 +7,7 @@ type Inputs = {
     age: number
 }
 
-function AddNewAnimal() {
+function AddNewAnimal({setRefreshKey}) {
 
     const {
         register,
@@ -15,14 +16,19 @@ function AddNewAnimal() {
         formState: {errors},
     } = useForm<Inputs>()
 
-    const onSubmit = (data: Inputs) => {
-        console.log({
-            id: 10,
-            name: data.name,
-            type: data.type,
-            age: +data.age
-        })
-        reset()
+
+    const onSubmit = async (data: Inputs) => {
+        try {
+            await axios.post('https://inqool-interview-api.vercel.app/api/animals', {
+                name: data.name,
+                type: data.type,
+                age: +data.age
+            });
+            setRefreshKey(prev => prev + 1)
+            reset()
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (

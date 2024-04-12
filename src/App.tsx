@@ -41,7 +41,7 @@ function App() {
                 setTableData(res.data)
                 setLoading(false)
             });
-    }, [page,refreshKey] );
+    }, [page, refreshKey]);
 
 
     const getData = async () => {
@@ -62,7 +62,8 @@ function App() {
                 <div className="container">
                     <div className="user-form">
                         <div className="user-form__data" id="targetElement">
-                            {page === "users" ? <AddNewUser setRefreshKey={setRefreshKey}/> : <AddNewAnimal/>}
+                            {page === "users" ? <AddNewUser setRefreshKey={setRefreshKey}/> :
+                                <AddNewAnimal setRefreshKey={setRefreshKey}/>}
                         </div>
                     </div>
                 </div>
