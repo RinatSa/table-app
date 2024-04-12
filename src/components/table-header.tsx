@@ -17,9 +17,11 @@ function TableHeader({term, setTerm, page, setPage}: HeaderProps) {
             <div className="table__info">
                 <Search term={term} setTerm={setTerm}/>
             </div>
-            <div className="new-user" id="new">
-                <span>Add New User</span>
-            </div>
+            <a href="#newUser">
+                <button className="new-user btn">
+                    Add New User
+                </button>
+            </a>
         </div>
     );
 }
