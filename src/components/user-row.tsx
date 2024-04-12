@@ -8,11 +8,13 @@ type TableData = {
     gender: "female" | "male" | "other"
     banned: boolean,
     index: number,
-    setRefreshKey: any
 }
 
-function UserRow({id, name, gender, banned, index, setRefreshKey}: TableData) {
+function UserRow({id, name, gender, banned, index}: TableData) {
 
+    const [actualName, setActualName] = useState<string>(name)
+    const [actualGender, setActualGender] = useState<string>(gender)
+    const [actualBanned, setActualBanned] = useState<boolean | string>(banned)
 
     const [status, setStatus] = useState<boolean>(banned)
     const [editable, setEditable] = useState<number | null>(null)
@@ -66,7 +68,7 @@ function UserRow({id, name, gender, banned, index, setRefreshKey}: TableData) {
     const update = async (id: string, data) => {
         try {
             await axios.patch(`https://inqool-interview-api.vercel.app/api/users/${id}`, data);
-            setRefreshKey(prev => prev + 1)
+            //setRefreshKey(prev => prev + 1)
         } catch (error) {
             console.error(error);
             return null;
@@ -101,9 +103,9 @@ function UserRow({id, name, gender, banned, index, setRefreshKey}: TableData) {
                 </td>
             </> : <>
                 <td>{id}</td>
-                <td>{name}</td>
-                <td>{gender}</td>
-                <td>{status + ""}</td>
+                <td>{actualName}</td>
+                <td>{actualGender}</td>
+                <td>{actualBanned + ""}</td>
             </>
             }
             <td>
@@ -117,7 +119,13 @@ function UserRow({id, name, gender, banned, index, setRefreshKey}: TableData) {
                 <div className="buttons">
                     {editable === index ? <div className="two-buttons">
                             <button className="cancel button btn" onClick={() => onEditable(null)}>Cancel</button>
-                            <button type="submit" form="editForm" value="Update" className="update button btn">Update
+                            <button type="submit" form="editForm" value="Update" className="update button btn"
+                                    onClick={() => {
+                                        setActualName(userName)
+                                        setActualGender(userGender)
+                                        setActualBanned(userBanned)
+                                        setStatus(prev => !prev)
+                                    }}>Update
                             </button>
                         </div> :
                         <button className="edit button btn" onClick={() => onEditable(index)}>Edit</button>
