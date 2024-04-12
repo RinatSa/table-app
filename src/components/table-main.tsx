@@ -14,8 +14,8 @@ function TableMain({tableData}) {
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
+                {tableData.map((item, index) => <UserRow {...item} key={item.id} index={index}/>)}
                 </tbody>
-                {tableData.map((item, index) => <UserRow {...item} key={item.id}/>)}
             </table>
         </div>
     );
