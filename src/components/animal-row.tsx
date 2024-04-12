@@ -10,7 +10,11 @@ type AnimalProps = {
     index: number
 }
 
-function AnimalRow({id, name, type, index, age, setRefreshKey}: AnimalProps) {
+function AnimalRow({id, name, type, index, age}: AnimalProps) {
+
+    const [actualName, setActualName] = useState<string>(name)
+    const [actualType, setActualType] = useState<string>(type)
+    const [actualAge, setActualAge] = useState<number>(age)
 
     const [editable, setEditable] = useState<number | null>(null)
     const [userName, setUserName] = useState<string>(name)
@@ -59,7 +63,6 @@ function AnimalRow({id, name, type, index, age, setRefreshKey}: AnimalProps) {
     const update = async (id: string, data) => {
         try {
             await axios.patch(`https://inqool-interview-api.vercel.app/api/animals/${id}`, data);
-            setRefreshKey(prev => prev + 1)
         } catch (error) {
             console.error(error);
             return null;
@@ -115,16 +118,21 @@ function AnimalRow({id, name, type, index, age, setRefreshKey}: AnimalProps) {
                 </td>
             </> : <>
                 <td>{id}</td>
-                <td>{name}</td>
-                <td>{type}</td>
-                <td>{age}</td>
+                <td>{actualName}</td>
+                <td>{actualType}</td>
+                <td>{actualAge}</td>
             </>
             }
             <td>
                 <div className="buttons">
                     {editable === index ? <div className="two-buttons">
                             <button className="cancel button btn" onClick={() => onEditable(null)}>Cancel</button>
-                            <button type="submit" form="editForm" value="Update" className="update button btn">Update
+                            <button type="submit" form="editForm" value="Update" className="update button btn"
+                                    onClick={() => {
+                                        setActualName(userName)
+                                        setActualType(userType)
+                                        setActualAge(userAge)
+                                    }}>Update
                             </button>
                         </div> :
                         <button className="edit button btn" onClick={() => onEditable(index)}>Edit</button>
