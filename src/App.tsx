@@ -10,6 +10,8 @@ function App() {
     //Fetch data and loading
     const [tableData, setTableData] = useState([])
     const [loading, setLoading] = useState<boolean>(true)
+    const [page, setPage] = useState<string>("users")
+
 
     //Name filter
     const [term, setTerm] = useState<string>("")
@@ -22,11 +24,11 @@ function App() {
                 setTableData(res.data)
                 setLoading(false)
             });
-    }, []);
+    }, [page]);
 
 
     const getData = async () => {
-        return await axios.get(`https://inqool-interview-api.vercel.app/api/users`)
+        return await axios.get(`https://inqool-interview-api.vercel.app/api/${page}`)
     }
 
     return (
@@ -34,8 +36,8 @@ function App() {
             <main className="main">
                 <div className="container">
                     <div className="table">
-                        <TableHeader term={term} setTerm={setTerm}/>
-                        {loading ? <Spinner/> : <TableMain tableData={tableData} term={term}/>}
+                        <TableHeader term={term} setTerm={setTerm} page={page} setPage={setPage}/>
+                        {loading ? <Spinner/> : <TableMain tableData={tableData} term={term} page={page}/>}
                     </div>
                 </div>
             </main>
