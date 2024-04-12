@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import axios from "axios";
 
 
 type TableData = {
@@ -6,10 +7,11 @@ type TableData = {
     name: string,
     gender: "female" | "male" | "other"
     banned: boolean,
-    index: number
+    index: number,
+    setRefreshKey: any
 }
 
-function UserRow({id, name, gender, banned, index}: TableData) {
+function UserRow({id, name, gender, banned, index, setRefreshKey}: TableData) {
 
 
     const [status, setStatus] = useState<boolean>(banned)
@@ -47,11 +49,22 @@ function UserRow({id, name, gender, banned, index}: TableData) {
                 gender: userGender,
                 banned: userBanned === 'false' ? false : !!userBanned
             }
-            console.log(updatedUser)
+
             setEditable(null)
+            update(id,updatedUser)
         }
     }
 
+
+    const update = async (id:string,data) => {
+        try {
+            await axios.patch(`https://inqool-interview-api.vercel.app/api/users/${id}`, data);
+            setRefreshKey(prev => prev + 1)
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    };
 
     return (
         <tr>

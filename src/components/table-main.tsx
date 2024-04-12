@@ -9,7 +9,7 @@ type TableProps = {
     page: string
 }
 
-function TableMain({tableData, term, page}: TableProps) {
+function TableMain({tableData, term, page, setRefreshKey}: TableProps) {
 
 
     const search = term === "" ? tableData : tableData.filter((item) => item.name.toLowerCase().startsWith((term.toLowerCase())))
@@ -33,7 +33,8 @@ function TableMain({tableData, term, page}: TableProps) {
                     <th>Age</th>
                     <th>Action</th>
                 </tr>}
-                {page === "users" ? search.map((item, index) => <UserRow {...item} key={item.id} index={index}/>) :
+                {page === "users" ? search.map((item, index) => <UserRow {...item} key={item.id} index={index}
+                                                                         setRefreshKey={setRefreshKey}/>) :
                     search.map((item, index) => <AnimalRow {...item} key={item.id} index={index}/>)}
                 </tbody>
             </table>
