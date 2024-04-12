@@ -23,9 +23,16 @@ function UserRow({id, name, gender, banned, index, setRefreshKey}: TableData) {
 
     const genderOptions = ["female", "male", "other"]
 
-    const changeStatus = () => {
+    const changeStatus = async (id: string) => {
         setStatus(prev => !prev)
-    }
+        try {
+            await axios.patch(`https://inqool-interview-api.vercel.app/api/users/${id}`, {banned: !banned});
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    };
+
 
     const onEditable = (i: number | null) => {
         setEditable(i)
@@ -51,12 +58,12 @@ function UserRow({id, name, gender, banned, index, setRefreshKey}: TableData) {
             }
 
             setEditable(null)
-            update(id,updatedUser)
+            update(id, updatedUser)
         }
     }
 
 
-    const update = async (id:string,data) => {
+    const update = async (id: string, data) => {
         try {
             await axios.patch(`https://inqool-interview-api.vercel.app/api/users/${id}`, data);
             setRefreshKey(prev => prev + 1)
@@ -116,8 +123,9 @@ function UserRow({id, name, gender, banned, index, setRefreshKey}: TableData) {
                         <button className="edit button btn" onClick={() => onEditable(index)}>Edit</button>
                     }
                     {editable === index ? null :
-                        <button className="ban button btn" onClick={changeStatus}>Ban</button>
-                    }
+                        <button className="ban button btn"
+                                onClick={(e) => changeStatus(e.target.getAttribute('data-id'))}
+                                data-id={id}>Ban</button>}
                 </div>
             </td>
         </tr>
