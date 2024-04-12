@@ -6,10 +6,10 @@ import {AnimalData, UserData} from "../App.tsx";
 type TableProps = {
     term: string,
     tableData: UserData[] | AnimalData[],
-    page: string
+    page: string,
 }
 
-function TableMain({tableData, term, page, setRefreshKey}: TableProps) {
+function TableMain({tableData, term, page}: TableProps) {
 
 
     const search = term === "" ? tableData : tableData.filter((item) => item.name.toLowerCase().startsWith((term.toLowerCase())))
@@ -33,10 +33,8 @@ function TableMain({tableData, term, page, setRefreshKey}: TableProps) {
                     <th>Age</th>
                     <th>Action</th>
                 </tr>}
-                {page === "users" ? search.map((item, index) => <UserRow {...item} key={item.id} index={index}
-                                                                         setRefreshKey={setRefreshKey}/>) :
-                    search.map((item, index) => <AnimalRow {...item} key={item.id} index={index}
-                                                           setRefreshKey={setRefreshKey}/>)}
+                {page === "users" ? search.map((item, index) => <UserRow {...item} key={item.id} index={index}/>) :
+                    search.map((item, index) => <AnimalRow {...item} key={item.id} index={index}/>)}
                 </tbody>
             </table>
         </div>

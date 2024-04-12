@@ -12,7 +12,7 @@ function TableHeader({term, setTerm, page, setPage}: HeaderProps) {
         <div className="table__head">
             <div>Show:
                 <button onClick={() => setPage(prevMode => (prevMode === 'users' ? 'animals' : 'users'))}
-                        className="btn-show button">{page === "users" ? "Animal" : "Users"}</button>
+                        className="btn-show btn button">{page === "users" ? "Animal" : "Users"}</button>
             </div>
             <div className="table__info">
                 <Search term={term} setTerm={setTerm}/>
