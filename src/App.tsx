@@ -27,6 +27,7 @@ function App() {
     const [tableData, setTableData] = useState<UserData[] | AnimalData[] | []>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [page, setPage] = useState<string>("users")
+    const [refreshKey, setRefreshKey] = useState<number>(0);
 
 
     //Name filter
@@ -40,7 +41,7 @@ function App() {
                 setTableData(res.data)
                 setLoading(false)
             });
-    }, [page]);
+    }, [page,refreshKey] );
 
 
     const getData = async () => {
@@ -61,7 +62,7 @@ function App() {
                 <div className="container">
                     <div className="user-form">
                         <div className="user-form__data" id="targetElement">
-                            {page === "users" ? <AddNewUser/> : <AddNewAnimal/>}
+                            {page === "users" ? <AddNewUser setRefreshKey={setRefreshKey}/> : <AddNewAnimal/>}
                         </div>
                     </div>
                 </div>

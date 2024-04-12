@@ -1,4 +1,5 @@
 import {useForm} from "react-hook-form";
+import axios from "axios";
 
 type Inputs = {
     name: string
@@ -6,7 +7,7 @@ type Inputs = {
     banned: string
 }
 
-function AddNewUser() {
+function AddNewUser({setRefreshKey}) {
 
     const {
         register,
@@ -15,14 +16,19 @@ function AddNewUser() {
         formState: {errors},
     } = useForm<Inputs>()
 
-    const onSubmit = (data: Inputs) => {
-        console.log({
-            id: 10,
-            name: data.name,
-            gender: data.gender,
-            banned: data.banned === 'false' ? false : !!data.banned
-        })
-        reset()
+
+    const onSubmit = async (data: Inputs) => {
+        try {
+            await axios.post('https://inqool-interview-api.vercel.app/api/users', {
+                name: data.name,
+                gender: data.gender,
+                banned: data.banned === 'false' ? false : !!data.banned
+            });
+            setRefreshKey(prev => prev + 1)
+            reset()
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
