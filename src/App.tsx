@@ -4,6 +4,7 @@ import AddNewUser from "./components/add-new-user.tsx";
 import {useEffect, useState} from "react";
 import Spinner from "./components/spinner.tsx";
 import axios from "axios"
+import AddNewAnimal from "./components/add-new-animal.tsx";
 
 export type UserData = {
     id: string,
@@ -60,7 +61,7 @@ function App() {
                 <div className="container">
                     <div className="user-form">
                         <div className="user-form__data" id="targetElement">
-                            <AddNewUser/>
+                            {page === "users" ? <AddNewUser/> : <AddNewAnimal/>}
                         </div>
                     </div>
                 </div>
