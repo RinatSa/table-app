@@ -132,7 +132,10 @@ function UserRow({id, name, gender, banned, index}: TableData) {
                     }
                     {editable === index ? null :
                         <button className="ban button btn"
-                                onClick={(e) => changeStatus(e.target.getAttribute('data-id'))}
+                                onClick={(e) => {
+                                    changeStatus(e.target.getAttribute('data-id'))
+                                    setActualBanned(!actualBanned)
+                                }}
                                 data-id={id}>Ban</button>}
                 </div>
             </td>
