@@ -32,13 +32,24 @@ function UserRow({id, name, gender, banned, index}: TableData) {
     const sendData = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const updatedUser = {
-            name: userName,
-            gender: userGender,
-            banned: userBanned === 'false' ? false : !!userBanned
+        const nameError = document.getElementById('name-error');
+        const lengthError = document.getElementById("length-error")
+        if (!/^[a-zA-Z .]+$/.test(userName)) {
+            nameError.style.display = 'block';
+            return;
+        } else if (userName.length > 35) {
+            lengthError.style.display = 'block';
+        } else {
+            nameError.style.display = 'none';
+
+            const updatedUser = {
+                name: userName,
+                gender: userGender,
+                banned: userBanned === 'false' ? false : !!userBanned
+            }
+            console.log(updatedUser)
+            setEditable(null)
         }
-        console.log(updatedUser)
-        setEditable(null)
     }
 
 
@@ -48,8 +59,10 @@ function UserRow({id, name, gender, banned, index}: TableData) {
                 <td>{id}</td>
                 <td>
                     <form onSubmit={(e) => sendData(e)} id="editForm">
-                        <input type="text" onChange={(e) => setUserName(e.target.value)} value={userName} name="name"
-                               required/>
+                        <input type="text" onChange={(e) => setUserName(e.target.value)} value={userName}
+                               name="name" required/>
+                        <span id="name-error" style={{color: "red", display: "none"}} className="message">Only alphabetic characters!</span>
+                        <span id="length-error" style={{color: "red", display: "none"}} className="message">Input is too long!</span>
                     </form>
                 </td>
                 <td>
@@ -66,10 +79,9 @@ function UserRow({id, name, gender, banned, index}: TableData) {
                         <option>{!banned + ""}</option>
                     </select>
                 </td>
-
             </> : <>
                 <td>{id}</td>
-                <td> {name}</td>
+                <td>{name}</td>
                 <td>{gender}</td>
                 <td>{status + ""}</td>
             </>
@@ -90,7 +102,8 @@ function UserRow({id, name, gender, banned, index}: TableData) {
                         </div> :
                         <button className="edit button btn" onClick={() => onEditable(index)}>Edit</button>
                     }
-                    {editable === index ? null : <button className="ban button btn" onClick={changeStatus}>Ban</button>
+                    {editable === index ? null :
+                        <button className="ban button btn" onClick={changeStatus}>Ban</button>
                     }
                 </div>
             </td>
