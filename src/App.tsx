@@ -1,8 +1,31 @@
 import TableHeader from "./components/table-header.tsx";
 import TableMain from "./components/table-main.tsx";
 import AddNewUser from "./components/add-new-user.tsx";
+import {useEffect, useState} from "react";
+import Spinner from "./components/spinner.tsx";
+import axios from "axios"
 
 function App() {
+
+
+    const [tableData, setTableData] = useState([])
+    const [loading, setLoading] = useState<boolean>(true)
+
+
+    useEffect(() => {
+        setLoading(true)
+        getData()
+            .then(res => {
+                setTableData(res.data)
+                setLoading(false)
+            });
+
+    }, []);
+
+
+    const getData = async () => {
+        return await axios.get(`https://inqool-interview-api.vercel.app/api/users`)
+    }
 
     return (
         <>
@@ -10,7 +33,7 @@ function App() {
                 <div className="container">
                     <div className="table">
                         <TableHeader/>
-                        <TableMain/>
+                        {loading ? <Spinner/> : <TableMain tableData={tableData}/>}
                     </div>
                 </div>
             </main>
