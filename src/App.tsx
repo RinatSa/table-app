@@ -7,9 +7,12 @@ import axios from "axios"
 
 function App() {
 
-
+    //Fetch data and loading
     const [tableData, setTableData] = useState([])
     const [loading, setLoading] = useState<boolean>(true)
+
+    //Name filter
+    const [term, setTerm] = useState<string>("")
 
 
     useEffect(() => {
@@ -19,7 +22,6 @@ function App() {
                 setTableData(res.data)
                 setLoading(false)
             });
-
     }, []);
 
 
@@ -32,8 +34,8 @@ function App() {
             <main className="main">
                 <div className="container">
                     <div className="table">
-                        <TableHeader/>
-                        {loading ? <Spinner/> : <TableMain tableData={tableData}/>}
+                        <TableHeader term={term} setTerm={setTerm}/>
+                        {loading ? <Spinner/> : <TableMain tableData={tableData} term={term}/>}
                     </div>
                 </div>
             </main>
