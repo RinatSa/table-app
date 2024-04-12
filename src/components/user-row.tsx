@@ -46,12 +46,18 @@ function UserRow({id, name, gender, banned, index}: TableData) {
         const nameError = document.getElementById('name-error');
         const lengthError = document.getElementById("length-error")
         if (!/^[a-zA-Z .]+$/.test(userName)) {
-            nameError.style.display = 'block';
-            return;
+            if (nameError) {
+                nameError.style.display = 'block';
+                return;
+            }
         } else if (userName.length > 35) {
-            lengthError.style.display = 'block';
+            if (lengthError) {
+                lengthError.style.display = 'block';
+            }
         } else {
-            nameError.style.display = 'none';
+            if (nameError) {
+                nameError.style.display = 'none';
+            }
 
             const updatedUser = {
                 name: userName,
@@ -65,10 +71,9 @@ function UserRow({id, name, gender, banned, index}: TableData) {
     }
 
 
-    const update = async (id: string, data) => {
+    const update = async (id: string, data: object) => {
         try {
             await axios.patch(`https://inqool-interview-api.vercel.app/api/users/${id}`, data);
-            //setRefreshKey(prev => prev + 1)
         } catch (error) {
             console.error(error);
             return null;

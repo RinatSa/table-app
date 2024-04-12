@@ -55,7 +55,7 @@ function App() {
                     <div className="table">
                         <TableHeader term={term} setTerm={setTerm} page={page} setPage={setPage}/>
                         {loading ? <Spinner/> :
-                            <TableMain tableData={tableData} term={term} page={page} setRefreshKey={setRefreshKey}/>}
+                            <TableMain tableData={tableData} term={term} page={page}/>}
                     </div>
                 </div>
             </main>

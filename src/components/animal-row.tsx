@@ -28,7 +28,7 @@ function AnimalRow({id, name, type, index, age}: AnimalProps) {
         setEditable(i)
     }
 
-    // Validation using the react hook form does not work, it still send a number in addition to the string
+    // Validation using the React hook form does not work, it still sends a number in addition to the string
     // for this reason vanilla js was used
 
     const sendData = (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,16 +38,24 @@ function AnimalRow({id, name, type, index, age}: AnimalProps) {
         const lengthError = document.getElementById("length-error")
         const ageError = document.getElementById("age-error")
         if (userAge > 99) {
-            ageError.style.display = 'block';
-            return
+            if (ageError) {
+                ageError.style.display = 'block';
+                return
+            }
         }
         if (!/^[a-žA-Ž .]+$/.test(userName)) {
-            nameError.style.display = 'block';
-            return;
+            if (nameError) {
+                nameError.style.display = 'block';
+                return;
+            }
         } else if (userName.length > 35) {
-            lengthError.style.display = 'block';
+            if (lengthError) {
+                lengthError.style.display = 'block';
+            }
         } else {
-            lengthError.style.display = 'none';
+            if (lengthError) {
+                lengthError.style.display = 'none';
+            }
 
             const updatedUser = {
                 name: userName,
@@ -60,7 +68,7 @@ function AnimalRow({id, name, type, index, age}: AnimalProps) {
         }
     }
 
-    const update = async (id: string, data) => {
+    const update = async (id: string, data: object) => {
         try {
             await axios.patch(`https://inqool-interview-api.vercel.app/api/animals/${id}`, data);
         } catch (error) {
@@ -92,7 +100,7 @@ function AnimalRow({id, name, type, index, age}: AnimalProps) {
                         <span id="name-error" style={{color: "red", display: "none"}} className="message">Only alphabetic characters!</span>
                         <span id="length-error" style={{color: "red", display: "none"}} className="message">Input is too long!</span>
                     </form>
-                    {/* Validation using the react hook form does not work, it still sent a number in addition to the string
+                    {/* Validation using the React hook form does not work, it still sent a number in addition to the string
 
                     <form onSubmit={handleSubmit(onSubmit)} id="editForm">
                         <Controller
