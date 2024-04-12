@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+//import {Controller, useForm} from "react-hook-form";
 
 type AnimalProps = {
     id: string,
@@ -22,16 +23,47 @@ function AnimalRow({id, name, type, index, age}: AnimalProps) {
         setEditable(i)
     }
 
-    const sendData = (e:React.FormEvent<HTMLFormElement>) => {
+    // Validation using the react hook form does not work, it still send a number in addition to the string
+    // for this reason vanilla js was used
+
+    const sendData = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const updatedUser = {
-            name: userName,
-            type: userType,
-            age: userAge,
+        const nameError = document.getElementById('name-error');
+        const lengthError = document.getElementById("length-error")
+        const ageError = document.getElementById("age-error")
+        if (userAge > 99) {
+            ageError.style.display = 'block';
+            return
         }
-        console.log(updatedUser)
-        setEditable(null)
+        if (!/^[a-žA-Ž .]+$/.test(userName)) {
+            nameError.style.display = 'block';
+            return;
+        } else if (userName.length > 35) {
+            lengthError.style.display = 'block';
+        } else {
+            lengthError.style.display = 'none';
+
+            const updatedUser = {
+                name: userName,
+                type: userType,
+                age: userAge,
+            }
+            console.log(updatedUser)
+            setEditable(null)
+        }
+    }
+
+    {/*const {control, handleSubmit} = useForm();
+        const onSubmit = () => {
+            const updatedUser = {
+                name: userName,
+                type: userType,
+                age: userAge,
+            }
+            console.log(updatedUser)
+            setEditable(null)
+        };*/
     }
 
 
@@ -42,7 +74,19 @@ function AnimalRow({id, name, type, index, age}: AnimalProps) {
                 <td>
                     <form onSubmit={(e) => sendData(e)} id="editForm">
                         <input type="text" onChange={(e) => setUserName(e.target.value)} value={userName}/>
+                        <span id="name-error" style={{color: "red", display: "none"}} className="message">Only alphabetic characters!</span>
+                        <span id="length-error" style={{color: "red", display: "none"}} className="message">Input is too long!</span>
                     </form>
+                    {/* Validation using the react hook form does not work, it still sent a number in addition to the string
+
+                    <form onSubmit={handleSubmit(onSubmit)} id="editForm">
+                        <Controller
+                            name="name"
+                            control={control}
+                            defaultValue={name}
+                            rules={{pattern: /^[A-Za-z ]+$/}}
+                            render={({field}) => <input {...field} onChange={(e) => setUserName(e.target.value)} value={userName}/>}/>
+                    </form>*/}
                 </td>
                 <td className={"name"}>
                     <select onChange={(e) => setUserType(e.target.value)}>
@@ -54,11 +98,13 @@ function AnimalRow({id, name, type, index, age}: AnimalProps) {
                 </td>
                 <td>
                     <input type="number" onChange={(e) => setUserAge(parseInt(e.target.value))} value={userAge}/>
+                    <span id="age-error" style={{color: "red", display: "none"}}
+                          className="message">Maximal age is 99!</span>
                 </td>
             </> : <>
                 <td>{id}</td>
                 <td>{name}</td>
-                <td className={"name"}>{type}</td>
+                <td>{type}</td>
                 <td>{age}</td>
             </>
             }
