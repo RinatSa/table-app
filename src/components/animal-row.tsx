@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import axios from "axios";
 //import {Controller, useForm} from "react-hook-form";
 
 type AnimalProps = {
@@ -9,7 +10,7 @@ type AnimalProps = {
     index: number
 }
 
-function AnimalRow({id, name, type, index, age}: AnimalProps) {
+function AnimalRow({id, name, type, index, age, setRefreshKey}: AnimalProps) {
 
     const [editable, setEditable] = useState<number | null>(null)
     const [userName, setUserName] = useState<string>(name)
@@ -49,10 +50,21 @@ function AnimalRow({id, name, type, index, age}: AnimalProps) {
                 type: userType,
                 age: userAge,
             }
-            console.log(updatedUser)
+
             setEditable(null)
+            update(id, updatedUser)
         }
     }
+
+    const update = async (id: string, data) => {
+        try {
+            await axios.patch(`https://inqool-interview-api.vercel.app/api/animals/${id}`, data);
+            setRefreshKey(prev => prev + 1)
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    };
 
     {/*const {control, handleSubmit} = useForm();
         const onSubmit = () => {

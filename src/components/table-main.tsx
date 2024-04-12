@@ -35,7 +35,8 @@ function TableMain({tableData, term, page, setRefreshKey}: TableProps) {
                 </tr>}
                 {page === "users" ? search.map((item, index) => <UserRow {...item} key={item.id} index={index}
                                                                          setRefreshKey={setRefreshKey}/>) :
-                    search.map((item, index) => <AnimalRow {...item} key={item.id} index={index}/>)}
+                    search.map((item, index) => <AnimalRow {...item} key={item.id} index={index}
+                                                           setRefreshKey={setRefreshKey}/>)}
                 </tbody>
             </table>
         </div>
