@@ -5,10 +5,25 @@ import {useEffect, useState} from "react";
 import Spinner from "./components/spinner.tsx";
 import axios from "axios"
 
+export type UserData = {
+    id: string,
+    name: string,
+    gender: "other" | "female" | "male",
+    banned: boolean,
+}
+
+export type AnimalData = {
+    id: string,
+    name: string,
+    type: "cat" | "dog" | "other",
+    age: number,
+}
+
+
 function App() {
 
     //Fetch data and loading
-    const [tableData, setTableData] = useState([])
+    const [tableData, setTableData] = useState<UserData[] | AnimalData[] | []>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [page, setPage] = useState<string>("users")
 

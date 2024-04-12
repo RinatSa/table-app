@@ -1,7 +1,16 @@
 import UserRow from "./user-row.tsx";
 import AnimalRow from "./animal-row.tsx";
+import {AnimalData, UserData} from "../App.tsx";
 
-function TableMain({tableData, term, page}) {
+
+type TableProps = {
+    term: string,
+    tableData: UserData[] | AnimalData[],
+    page: string
+}
+
+function TableMain({tableData, term, page}: TableProps) {
+
 
     const search = term === "" ? tableData : tableData.filter((item) => item.name.toLowerCase().startsWith((term.toLowerCase())))
 
